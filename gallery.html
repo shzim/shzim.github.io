@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery — Shariar Hossain Zim</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="header" class="scrolled">
+    <div class="container">
+      <nav class="nav-bar">
+        <div class="brand">
+          <a href="index.html#hero">
+            <h1><span>S</span>hariar <span>H</span>ossain <span>Z</span>im</h1>
+          </a>
+        </div>
+        <div class="nav-list">
+          <div class="hamburger" id="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <ul id="nav-ul">
+            <li><a href="index.html#hero" class="nav-item">Home</a></li>
+            <li><a href="index.html#projects" class="nav-item">Projects</a></li>
+            <li><a href="gallery.html" class="nav-item active-link">Gallery</a></li>
+            <li><a href="index.html#about" class="nav-item">About</a></li>
+            <li><a href="index.html#contact" class="nav-item">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Gallery Hero -->
+  <section class="gallery-hero">
+    <div class="container">
+      <h1 class="section-title">Photography <span>Gallery</span></h1>
+      <p class="section-subtitle">Visual stories sorted by highest rating & album categories</p>
+
+      <!-- Album Filter Buttons -->
+      <div class="gallery-filters" id="album-filters">
+        <button class="filter-btn active" data-album="All">All Albums</button>
+        <button class="filter-btn" data-album="International Tours">International Tours</button>
+        <button class="filter-btn" data-album="General">General</button>
+        <button class="filter-btn" data-album="Aviation">Aviation</button>
+        <button class="filter-btn" data-album="Creative">Creative</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Photo Grid -->
+  <section>
+    <div class="container">
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Dynamically populated photos via gallery.js -->
+        <div class="status-msg" style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">
+          Loading photo gallery...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-modal">
+    <div class="glass-panel lightbox-content">
+      <span class="lightbox-close" id="lightbox-close">&times;</span>
+      <div class="lightbox-img-wrapper">
+        <img id="lightbox-img" src="" alt="Full view">
+      </div>
+      <div class="lightbox-details">
+        <div>
+          <h3 id="lightbox-title" style="font-size: 2.2rem; margin-bottom: 0.5rem;">Photo Title</h3>
+          <span id="lightbox-album" class="gallery-card-album">Album Name</span>
+        </div>
+        <div id="lightbox-rating" class="gallery-rating" style="font-size: 2.4rem;">
+          ★★★★★
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="container footer-content">
+      <div class="brand">
+        <h1><span>S</span>hariar <span>H</span>ossain <span>Z</span>im</h1>
+      </div>
+      <p style="margin-top: 1rem;"><a href="admin.html" style="font-size: 1.4rem; color: var(--text-muted); opacity: 0.8; text-decoration: none;" onmouseover="this.style.color='var(--primary-accent)'; this.style.opacity='1'" onmouseout="this.style.color='var(--text-muted)'; this.style.opacity='0.8'">🔒 Admin Portal Login</a></p>
+      <p class="footer-copy">&copy; 2026 Shariar Hossain Zim. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="gallery.js"></script>
+</body>
+</html>

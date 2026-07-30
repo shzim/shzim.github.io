@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Shariar Hossain Zim</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body class="admin-body">
+
+  <div id="admin-dashboard-view" class="admin-container" style="max-width: 900px;">
+    <!-- Navigation Bar -->
+    <nav class="glass-panel admin-nav">
+      <div class="brand">Admin Dashboard</div>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <button id="open-trash-modal-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.4rem; font-size: 1.3rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.5);">
+          🗑️ Recycle Bin (<span id="trash-badge-count">0</span>)
+        </button>
+        <a href="gallery.html" class="cta-btn outline-btn" style="padding: 0.8rem 1.6rem; font-size: 1.4rem;">View Gallery</a>
+        <button id="logout-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.6rem; font-size: 1.4rem;">Log Out</button>
+      </div>
+    </nav>
+
+    <main style="display: flex; flex-direction: column; gap: 3rem;">
+
+      <!-- SECTION 1: PUBLISH NEW PHOTO -->
+      <section class="glass-panel upload-card">
+        <div class="card-header">
+          <h2>Publish New Photo</h2>
+          <p>Upload photography directly to your live gallery</p>
+        </div>
+
+        <form id="upload-form">
+          <!-- Drag & Drop Zone -->
+          <div class="drag-drop-zone" id="drop-zone">
+            <input type="file" id="photo-input" accept="image/*" class="file-input">
+            <div class="drop-zone-content" id="drop-zone-content">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+              <p>Drag & drop photo here, or <span>browse file</span></p>
+              <small>Supports PNG, JPG, WEBP</small>
+            </div>
+
+            <div id="image-preview-container" class="preview-container hidden">
+              <img id="image-preview" src="" alt="Preview">
+              <button type="button" id="remove-img-btn" class="remove-btn" title="Remove image">&times;</button>
+            </div>
+          </div>
+
+          <!-- Photo Title -->
+          <div class="form-group">
+            <label for="photo-title">Photo Title</label>
+            <input type="text" id="photo-title" placeholder="e.g. Sunset over Male Atoll" required>
+          </div>
+
+          <div class="form-row">
+            <!-- Rating Slider -->
+            <div class="form-group flex-1">
+              <label for="photo-rating">
+                <span>Rating</span>
+                <span id="rating-value" class="rating-badge">★ 5.0</span>
+              </label>
+              <input type="range" id="photo-rating" min="1" max="5" step="0.5" value="5">
+              <div class="star-display" id="star-display">★★★★★</div>
+            </div>
+
+            <!-- Album Selector -->
+            <div class="form-group flex-1">
+              <label for="photo-album">Album / Folder</label>
+              <select id="photo-album" required>
+                <option value="International Tours">International Tours</option>
+                <option value="General">General</option>
+                <option value="Aviation">Aviation</option>
+                <option value="Creative">Creative</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Progress Bar & Status -->
+          <div id="upload-progress-bar" class="progress-bar hidden">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <div id="status-message" class="status-msg"></div>
+
+          <button type="submit" id="publish-btn" class="cta-btn primary-btn full-width">Publish Photo</button>
+        </form>
+      </section>
+
+      <!-- SECTION 2: ALBUM & FOLDER MANAGEMENT -->
+      <section class="glass-panel" style="padding: 3rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-size: 2.2rem; font-weight: 700;">Folder / Album Manager</h2>
+            <p style="color: var(--text-muted); font-size: 1.4rem;">Create new album folders or rename existing ones</p>
+          </div>
+          <button id="create-album-btn" class="cta-btn primary-btn" style="padding: 0.8rem 1.8rem; font-size: 1.4rem;">+ Create New Album</button>
+        </div>
+
+        <div id="album-list-container" style="display: flex; flex-wrap: wrap; gap: 1.2rem;">
+          <!-- Populated by dashboard.js -->
+        </div>
+      </section>
+
+      <!-- SECTION 3: PUBLISHED PHOTOS MANAGEMENT -->
+      <section class="glass-panel" style="padding: 3rem;">
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 2.2rem; font-weight: 700;">Manage Published Photos</h2>
+          <p style="color: var(--text-muted); font-size: 1.4rem;">Edit photo titles, ratings, album tags, or move items to Trash</p>
+        </div>
+
+        <div id="manage-photos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
+          <!-- Populated by dashboard.js -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- DEDICATED RECYCLE BIN MODAL -->
+  <div id="recycle-bin-modal" class="lightbox-modal">
+    <div class="glass-panel" style="max-width: 900px; width: 95%; max-height: 85vh; overflow-y: auto; padding: 3rem; position: relative; border-color: rgba(239,68,68,0.4);">
+      <span class="lightbox-close" id="recycle-bin-close">&times;</span>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.5rem;">
+        <div>
+          <h2 style="font-size: 2.4rem; font-weight: 700; color: #ef4444;">🗑️ Recycle Bin</h2>
+          <p style="color: var(--text-muted); font-size: 1.3rem;">Items are permanently purged automatically after 90 days</p>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <button id="select-all-trash-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.4rem; font-size: 1.3rem;">Select All</button>
+          <button id="restore-selected-btn" class="cta-btn primary-btn" style="padding: 0.8rem 1.4rem; font-size: 1.3rem; display: none;">Restore Selected (0)</button>
+          <button id="delete-selected-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.4rem; font-size: 1.3rem; color: #ef4444; border-color: #ef4444; display: none;">Delete Selected (0)</button>
+          <button id="empty-trash-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.4rem; font-size: 1.3rem; color: #ef4444; border-color: #ef4444;">Empty Bin</button>
+        </div>
+      </div>
+
+      <div id="recycle-bin-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2rem;">
+        <!-- Populated by dashboard.js inside modal -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Photo Modal -->
+  <div id="edit-photo-modal" class="lightbox-modal">
+    <div class="glass-panel" style="max-width: 500px; width: 100%; padding: 3rem; position: relative;">
+      <span class="lightbox-close" id="edit-photo-close">&times;</span>
+      <h3 style="font-size: 2.2rem; margin-bottom: 1.5rem;">Edit Photo Details</h3>
+      
+      <form id="edit-photo-form">
+        <input type="hidden" id="edit-photo-id">
+        <div class="form-group">
+          <label for="edit-photo-title">Title</label>
+          <input type="text" id="edit-photo-title" required>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-photo-rating">
+            <span>Rating</span>
+            <span id="edit-rating-value" class="rating-badge">★ 5.0</span>
+          </label>
+          <input type="range" id="edit-photo-rating" min="1" max="5" step="0.5">
+        </div>
+
+        <div class="form-group">
+          <label for="edit-photo-album">Album</label>
+          <select id="edit-photo-album" required></select>
+        </div>
+
+        <button type="submit" class="cta-btn primary-btn full-width" style="margin-top: 1rem;">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
