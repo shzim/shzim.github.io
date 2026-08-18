@@ -14,3 +14,18 @@ Thumbs.db
 
 # Temporary test images
 shzim.github.io/hero-bg-opt.jpg
+
+# CAD Files & Models (Kept Local Only - Excluded from Git)
+*.stl
+*.step
+*.stp
+*.iges
+*.igs
+*.sldprt
+*.sldasm
+*.dwg
+*.dxf
+*.obj
+cad_files/
+cad_assets/
+

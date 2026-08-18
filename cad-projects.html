@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAD Modeling & Aeronautical Design — Shariar Hossain Zim</title>
+  <meta name="description" content="Aeronautical Engineering 3D CAD Modeling, Structural Rib Assemblies, Turbine Blades, and UAV Chassis Portfolio">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+  <!-- Header Navigation Bar -->
+  <header id="header">
+    <div class="container">
+      <nav class="nav-bar">
+        <div class="brand">
+          <a href="index.html#hero">
+            <h1><span>S</span>hariar <span>H</span>ossain <span>Z</span>im</h1>
+          </a>
+        </div>
+        <div class="nav-list">
+          <div class="hamburger" id="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <ul id="nav-ul">
+            <li><a href="index.html#hero" class="nav-item">Home</a></li>
+            <li><a href="index.html#projects" class="nav-item">Projects</a></li>
+            <li><a href="gallery.html" class="nav-item">Gallery</a></li>
+            <li><a href="index.html#about" class="nav-item">About</a></li>
+            <li><a href="index.html#contact" class="nav-item">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="cad-hero">
+    <div class="container">
+      <div class="hero-badge reveal active" style="margin-bottom: 1.5rem;">
+        <span class="dot"></span>
+        <span>Aeronautical Engineering & 3D Modeling</span>
+      </div>
+      <h1 class="section-title reveal active" style="font-size: 5rem; margin-bottom: 1rem;">
+        CAD <span>Modeling</span> & Design
+      </h1>
+      <p class="section-subtitle reveal active" style="font-size: 1.8rem; max-width: 750px;">
+        Interactive 3D WebGL viewport, structural finite element analysis models, aircraft wing assemblies, and drone airframe engineering designs.
+      </p>
+
+      <!-- Category Filter Tabs -->
+      <div class="gallery-filters reveal active">
+        <button class="filter-btn active" data-category="All">All CAD Models</button>
+        <button class="filter-btn" data-category="Aeronautical">Aeronautical</button>
+        <button class="filter-btn" data-category="Propulsion">Propulsion</button>
+        <button class="filter-btn" data-category="Drone & UAV">Drone & UAV</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAD Projects Grid -->
+  <main class="container">
+    <div id="cad-grid" class="cad-grid">
+      <!-- Dynamically populated by cad.js -->
+    </div>
+  </main>
+
+  <!-- 3D Interactive WebGL Viewport Modal -->
+  <div id="cad-modal" class="cad-modal">
+    <div class="cad-modal-header">
+      <div class="cad-modal-title">
+        <h3 id="modal-project-title">Aeronautical Wing Rib & Spar Assembly</h3>
+        <span id="modal-project-category">3D WebGL Realtime Viewport</span>
+      </div>
+      <button id="cad-modal-close" class="lightbox-close" style="position: static; font-size: 3.5rem;">&times;</button>
+    </div>
+
+    <div class="cad-modal-body">
+      <div id="cad-canvas-container" class="cad-canvas-wrapper">
+        <!-- Three.js Canvas injected here -->
+      </div>
+
+      <!-- 3D Viewport Toolbar Controls -->
+      <div class="cad-toolbar">
+        <button id="tool-rotate" class="cad-tool-btn active">
+          <span>🔄</span> Auto Rotate
+        </button>
+        <button id="tool-wireframe" class="cad-tool-btn">
+          <span>🌐</span> Wireframe
+        </button>
+        <button id="tool-reset" class="cad-tool-btn">
+          <span>🎯</span> Reset Camera
+        </button>
+      </div>
+
+      <!-- Project Metadata Sidebar -->
+      <div class="cad-modal-sidebar">
+        <div>
+          <h4 style="font-size: 1.8rem; color: var(--secondary-accent); margin-bottom: 0.8rem;">Project Specifications</h4>
+          <p id="modal-project-desc" style="font-size: 1.4rem; color: var(--text-muted); line-height: 1.6;"></p>
+        </div>
+
+        <div class="cad-specs-list" style="margin: 0;">
+          <div class="cad-spec-item">
+            <span class="cad-spec-label">CAD Software</span>
+            <span id="modal-spec-software" class="cad-spec-val">SolidWorks 2024</span>
+          </div>
+          <div class="cad-spec-item">
+            <span class="cad-spec-label">Formats</span>
+            <span id="modal-spec-format" class="cad-spec-val">STEP / STL</span>
+          </div>
+          <div class="cad-spec-item">
+            <span class="cad-spec-label">Material</span>
+            <span id="modal-spec-material" class="cad-spec-val">Aluminum 7075</span>
+          </div>
+        </div>
+
+        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 1rem;">
+          <button class="cad-btn cad-btn-outline" onclick="alert('Note: CAD files (.stl/.step) are stored locally in your workspace cad_files/ folder as per your git exclusion settings.')">
+            📁 Local CAD Assets Info
+          </button>
+          <button class="cad-btn cad-btn-primary" onclick="document.getElementById('cad-modal-close').click()">
+            Close Viewport
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="container footer-content">
+      <div class="brand">
+        <h1><span>S</span>hariar <span>H</span>ossain <span>Z</span>im</h1>
+      </div>
+
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/shzim/" target="_blank" class="social-icon-btn" title="LinkedIn" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/shzimbaka/" target="_blank" class="social-icon-btn" title="Facebook" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://twitter.com/loneeeeewoolfff" target="_blank" class="social-icon-btn" title="X (Twitter)" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/loneeeeewooooolfffff" target="_blank" class="social-icon-btn" title="Instagram" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+      </div>
+
+      <p style="margin-top: 1.5rem;"><a href="admin.html" style="font-size: 1.4rem; color: var(--text-muted); opacity: 0.8; text-decoration: none;" onmouseover="this.style.color='var(--primary-accent)'; this.style.opacity='1'" onmouseout="this.style.color='var(--text-muted)'; this.style.opacity='0.8'">🔒 Admin Portal Login</a></p>
+      <p class="footer-copy">&copy; 2026 Shariar Hossain Zim. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="cad.js"></script>
+</body>
+</html>

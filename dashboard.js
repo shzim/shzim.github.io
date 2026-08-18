@@ -4,7 +4,7 @@ let selectedFile = null;
 let imageBase64Data = null;
 let selectedTrashIds = new Set();
 
-let albums = ["International Tours", "General", "Aviation", "Creative"];
+let albums = ["CAD Modeling", "International Tours", "General", "Aviation", "Creative"];
 
 const defaultPhotos = [
   {
