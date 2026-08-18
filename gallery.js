@@ -5,14 +5,14 @@ const defaultPhotos = [
   {
     id: 'demo-1',
     title: 'ICEP Maldives XX1 Camp Delegation',
-    album: 'ICEP Maldives',
+    album: 'International Tours',
     rating: 5,
     imageUrl: './img/img-11.webp'
   },
   {
     id: 'demo-2',
     title: 'NCC Night Photography - Emotion & Storytelling',
-    album: 'NCC Night',
+    album: 'General',
     rating: 5,
     imageUrl: './img/img-1.webp'
   },
