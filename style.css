@@ -603,10 +603,15 @@ ul {
 }
 
 .social-icon-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--text-main);
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
   transition: var(--transition-fast);
+}
+
+.social-icon-btn svg[fill="none"] {
+  fill: none;
+  stroke: currentColor;
 }
 
 .social-icon-btn:hover {
@@ -617,7 +622,7 @@ ul {
 }
 
 .social-icon-btn:hover svg {
-  stroke: #ffffff;
+  color: #ffffff;
   transform: scale(1.15);
 }
 
