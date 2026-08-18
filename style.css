@@ -1048,6 +1048,30 @@ input[type="range"] {
 @media (max-width: 768px) {
   html { font-size: 56.25%; } /* 9px base */
   .hamburger { display: flex; }
+
+  #hero {
+    min-height: 100vh;
+    padding-top: 10rem;
+    padding-bottom: 5rem;
+    background-position: 82% center;
+    background-image: linear-gradient(180deg, rgba(9, 13, 22, 0.75) 0%, rgba(9, 13, 22, 0.88) 75%, var(--bg-dark) 100%), url('./img/hero-bg.webp');
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: 3.6rem;
+    line-height: 1.15;
+    margin-bottom: 1.8rem;
+  }
+
+  .hero-description {
+    font-size: 1.5rem;
+    line-height: 1.65;
+    margin-bottom: 2.5rem;
+  }
   
   .nav-list ul {
     position: fixed;
@@ -1068,5 +1092,16 @@ input[type="range"] {
   }
   
   .form-row { flex-direction: column; gap: 1rem; }
-  .hero-title { font-size: 4rem; }
+}
+
+@media (max-width: 480px) {
+  #hero {
+    background-position: 85% center;
+    padding-top: 9.5rem;
+  }
+  .hero-title { font-size: 3.2rem; }
+  .section-title { font-size: 2.8rem; }
+  .quote-card { padding: 2.5rem 1.8rem; }
+  .quote-text { font-size: 1.7rem; line-height: 1.7; }
+  .projects-grid { grid-template-columns: 1fr; }
 }
