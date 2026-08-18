@@ -5,14 +5,14 @@ const defaultPhotos = [
   {
     id: 'demo-1',
     title: 'ICEP Maldives XX1 Camp Delegation',
-    album: 'International Tours',
+    album: 'ICEP Maldives',
     rating: 5,
     imageUrl: './img/img-11.webp'
   },
   {
     id: 'demo-2',
     title: 'NCC Night Photography - Emotion & Storytelling',
-    album: 'General',
+    album: 'NCC Night',
     rating: 5,
     imageUrl: './img/img-1.webp'
   },
@@ -37,10 +37,10 @@ let currentFilter = 'All';
 
 document.addEventListener('DOMContentLoaded', async () => {
   setupMobileMenu();
-  renderDynamicAlbumFilterButtons();
   setupFilters();
   setupLightbox();
   await loadPhotos();
+  renderDynamicAlbumFilterButtons();
 });
 
 function setupMobileMenu() {
