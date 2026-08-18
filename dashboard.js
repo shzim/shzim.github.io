@@ -12,28 +12,28 @@ const defaultPhotos = [
     title: 'ICEP Maldives XX1 Camp Delegation',
     album: 'International Tours',
     rating: 5,
-    imageUrl: '../shzim.github.io/img-11.png'
+    imageUrl: './img/img-11.webp'
   },
   {
     id: 'demo-2',
     title: 'NCC Night Photography - Emotion & Storytelling',
     album: 'General',
     rating: 5,
-    imageUrl: '../shzim.github.io/img/img-1.png'
+    imageUrl: './img/img-1.webp'
   },
   {
     id: 'demo-3',
     title: 'Aviation Engineering & Cockpit Heritage',
     album: 'Aviation',
     rating: 4.5,
-    imageUrl: '../shzim.github.io/img-13.png'
+    imageUrl: './img/img-13.webp'
   },
   {
     id: 'demo-4',
     title: 'Creative Visual Composition',
     album: 'Creative',
     rating: 4,
-    imageUrl: '../shzim.github.io/img-14.png'
+    imageUrl: './img/img-14.webp'
   }
 ];
 
@@ -101,7 +101,6 @@ function loadPhotosAndTrash() {
   let photos = getAllPhotosRaw();
   let trash = JSON.parse(localStorage.getItem('zim_recycle_bin') || '[]');
 
-  // AUTOMATED 90-DAY PERMANENT DELETION PURGE
   const ninetyDaysMs = 90 * 24 * 60 * 60 * 1000;
   const now = Date.now();
   
@@ -115,7 +114,6 @@ function loadPhotosAndTrash() {
     localStorage.setItem('zim_recycle_bin', JSON.stringify(trash));
   }
 
-  // Update badge counter in navbar
   const trashBadge = document.getElementById('trash-badge-count');
   if (trashBadge) trashBadge.textContent = trash.length;
 
@@ -174,7 +172,6 @@ function renderTrashGrid(trash) {
 
     return `
       <div class="glass-panel ${isChecked ? 'selected-card' : ''}" style="overflow: hidden; display: flex; flex-direction: column; border-radius: var(--radius-sm); border-color: rgba(239,68,68,0.3); position: relative;">
-        <!-- Selection Checkbox -->
         <div style="position: absolute; top: 1rem; left: 1rem; z-index: 10; background: rgba(0,0,0,0.75); padding: 0.4rem 0.8rem; border-radius: 4px; display: flex; align-items: center; gap: 0.6rem;">
           <input type="checkbox" onchange="toggleTrashSelection('${item.id}', this.checked)" ${isChecked} style="width: 1.8rem; height: 1.8rem; cursor: pointer; accent-color: var(--primary-accent);">
           <span style="font-size: 1.2rem; font-weight: 600;">Select</span>
@@ -228,7 +225,6 @@ function updateBulkActionButtons() {
   }
 }
 
-// Window Inline Handlers
 window.openEditModal = function(id) {
   const photos = getAllPhotosRaw();
   const photo = photos.find(p => p.id === id);
@@ -322,7 +318,6 @@ function setupDashboardControls() {
     });
   }
 
-  // Open & Close Recycle Bin Modal
   if (openTrashModalBtn && recycleBinModal) {
     openTrashModalBtn.addEventListener('click', () => {
       recycleBinModal.classList.add('active');

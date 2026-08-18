@@ -1,0 +1,16 @@
+# Temporary scripts and logs
+verify_links.py
+*.log
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Temporary test images
+shzim.github.io/hero-bg-opt.jpg

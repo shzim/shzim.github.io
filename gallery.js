@@ -7,28 +7,28 @@ const defaultPhotos = [
     title: 'ICEP Maldives XX1 Camp Delegation',
     album: 'International Tours',
     rating: 5,
-    imageUrl: '../shzim.github.io/img-11.png'
+    imageUrl: './img/img-11.webp'
   },
   {
     id: 'demo-2',
     title: 'NCC Night Photography - Emotion & Storytelling',
     album: 'General',
     rating: 5,
-    imageUrl: '../shzim.github.io/img/img-1.png'
+    imageUrl: './img/img-1.webp'
   },
   {
     id: 'demo-3',
     title: 'Aviation Engineering & Cockpit Heritage',
     album: 'Aviation',
     rating: 4.5,
-    imageUrl: '../shzim.github.io/img-13.png'
+    imageUrl: './img/img-13.webp'
   },
   {
     id: 'demo-4',
     title: 'Creative Visual Composition',
     album: 'Creative',
     rating: 4,
-    imageUrl: '../shzim.github.io/img-14.png'
+    imageUrl: './img/img-14.webp'
   }
 ];
 
@@ -121,7 +121,7 @@ function renderGallery() {
     const starDisplay = `${fullStars} ${photo.rating}`;
 
     card.innerHTML = `
-      <img src="${photo.imageUrl}" alt="${photo.title}" loading="lazy">
+      <img src="${photo.imageUrl}" alt="${photo.title}" loading="lazy" decoding="async">
       <div class="gallery-card-overlay">
         <div class="gallery-rating">${starDisplay}</div>
         <h3 class="gallery-card-title">${photo.title}</h3>
