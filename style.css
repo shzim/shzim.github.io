@@ -598,20 +598,27 @@ ul {
   justify-content: center;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--glass-border);
+  color: var(--text-main);
   transition: var(--transition-fast);
 }
 
-.social-icon-btn img {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
+.social-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-main);
+  transition: var(--transition-fast);
 }
 
 .social-icon-btn:hover {
   background: var(--primary-accent);
   border-color: var(--primary-accent);
   transform: translateY(-4px);
-  box-shadow: 0 0 15px var(--primary-glow);
+  box-shadow: 0 0 18px var(--primary-glow);
+}
+
+.social-icon-btn:hover svg {
+  stroke: #ffffff;
+  transform: scale(1.15);
 }
 
 .footer-copy {
