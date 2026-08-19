@@ -60,10 +60,14 @@ function renderDynamicAlbumFilterButtons() {
 
   const customAlbums = JSON.parse(localStorage.getItem('zim_custom_albums') || '[]');
   const defaultAlbums = ["International Tours", "General", "Aviation", "Creative"];
-  const allAlbums = Array.from(new Set([...defaultAlbums, ...customAlbums]));
+  const deletedAlbums = JSON.parse(localStorage.getItem('zim_deleted_albums') || '[]');
+
+  const allAlbums = Array.from(new Set([...defaultAlbums, ...customAlbums])).filter(a => !deletedAlbums.includes(a));
 
   filterContainer.innerHTML = `<button class="filter-btn active" data-album="All">All Albums</button>` +
     allAlbums.map(a => `<button class="filter-btn" data-album="${a}">${a}</button>`).join('');
+  
+  setupFilters();
 }
 
 async function loadPhotos() {
@@ -75,7 +79,8 @@ async function loadPhotos() {
       const q = query(collection(db, "gallery_photos"), orderBy("rating", "desc"));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        loadedPhotos.push({ id: doc.id, ...doc.data() });
+        const item = { id: doc.id, ...doc.data() };
+        if (!item.deletedAt) loadedPhotos.push(item);
       });
     } catch (err) {
       console.warn("Failed to fetch from Firebase, using fallback photos:", err);
@@ -83,7 +88,9 @@ async function loadPhotos() {
   }
 
   const combinedMap = new Map();
-  [...localItems, ...loadedPhotos, ...defaultPhotos].forEach(photo => {
+  const rawList = loadedPhotos.length > 0 ? loadedPhotos : (localItems.length > 0 ? localItems : defaultPhotos);
+  
+  rawList.filter(p => !p.deletedAt).forEach(photo => {
     if (!combinedMap.has(photo.id)) {
       combinedMap.set(photo.id, photo);
     }

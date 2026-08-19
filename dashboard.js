@@ -153,7 +153,9 @@ function setupTabNavigation() {
 
 // ================= ALBUMS & PHOTOS =================
 async function loadAlbums() {
+  const defaultAlbums = ["International Tours", "General", "Aviation", "Creative"];
   let customAlbums = [];
+
   if (isFirebaseConfigured && db) {
     try {
       const snap = await getDocs(collection(db, "albums"));
@@ -163,7 +165,11 @@ async function loadAlbums() {
     customAlbums = JSON.parse(localStorage.getItem('zim_custom_albums') || '[]');
   }
 
-  albums = Array.from(new Set([...albums, ...customAlbums]));
+  const deletedAlbums = JSON.parse(localStorage.getItem('zim_deleted_albums') || '[]');
+  const combined = Array.from(new Set([...defaultAlbums, ...customAlbums]));
+  albums = combined.filter(a => !deletedAlbums.includes(a));
+  
+  if (!albums.includes("General")) albums.unshift("General");
 
   const selectElem = document.getElementById('photo-album');
   const editSelectElem = document.getElementById('edit-photo-album');
@@ -182,6 +188,7 @@ function renderAlbumsList() {
     <div class="glass-panel" style="padding: 1.2rem 1.8rem; display: flex; align-items: center; gap: 1rem; border-radius: var(--radius-sm);">
       <span style="font-weight: 600;">📁 ${albumName}</span>
       <button onclick="editAlbumName('${albumName}')" style="background: none; border: none; color: var(--secondary-accent); cursor: pointer; font-size: 1.4rem;" title="Rename Album">✎ Edit</button>
+      ${albumName !== 'General' ? `<button onclick="deleteAlbumName('${albumName}')" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.4rem;" title="Delete Album">🗑️ Delete</button>` : ''}
     </div>
   `).join('');
 }
@@ -198,11 +205,70 @@ window.editAlbumName = async function(oldName) {
       await addDoc(collection(db, "albums"), { name: trimmed, createdAt: new Date().toISOString() });
     } catch (e) { console.error(e); }
   } else {
-    localStorage.setItem('zim_custom_albums', JSON.stringify(albums));
+    let custom = JSON.parse(localStorage.getItem('zim_custom_albums') || '[]');
+    custom = custom.map(a => a === oldName ? trimmed : a);
+    if (!custom.includes(trimmed)) custom.push(trimmed);
+    localStorage.setItem('zim_custom_albums', JSON.stringify(custom));
   }
 
   loadAlbums();
   loadPhotosAndTrash();
+};
+
+window.deleteAlbumName = async function(albumName) {
+  if (!confirm(`Delete folder/album "${albumName}"? Photos inside will be reassigned to General.`)) return;
+
+  let deletedAlbums = JSON.parse(localStorage.getItem('zim_deleted_albums') || '[]');
+  if (!deletedAlbums.includes(albumName)) {
+    deletedAlbums.push(albumName);
+    localStorage.setItem('zim_deleted_albums', JSON.stringify(deletedAlbums));
+  }
+
+  let customAlbums = JSON.parse(localStorage.getItem('zim_custom_albums') || '[]');
+  customAlbums = customAlbums.filter(a => a !== albumName);
+  localStorage.setItem('zim_custom_albums', JSON.stringify(customAlbums));
+
+  if (isFirebaseConfigured && db) {
+    try {
+      const q = query(collection(db, "albums"), where("name", "==", albumName));
+      const snap = await getDocs(q);
+      snap.forEach(async (docSnap) => {
+        await deleteDoc(doc(db, "albums", docSnap.id));
+      });
+    } catch (e) { console.error(e); }
+  }
+
+  let localPhotos = JSON.parse(localStorage.getItem('zim_published_photos') || '[]');
+  localPhotos.forEach(p => {
+    if (p.album === albumName) p.album = 'General';
+  });
+  localStorage.setItem('zim_published_photos', JSON.stringify(localPhotos));
+
+  loadAlbums();
+  loadPhotosAndTrash();
+};
+
+window.openEditPhotoModal = async function(id) {
+  let photo = null;
+  if (isFirebaseConfigured && db) {
+    try {
+      const snap = await getDoc(doc(db, "gallery_photos", id));
+      if (snap.exists()) photo = { id: snap.id, ...snap.data() };
+    } catch (e) { console.error(e); }
+  }
+  if (!photo) {
+    const localPhotos = JSON.parse(localStorage.getItem('zim_published_photos') || '[]');
+    photo = [...localPhotos, ...defaultPhotos].find(p => p.id === id);
+  }
+  if (!photo) return;
+
+  document.getElementById('edit-photo-id').value = photo.id;
+  document.getElementById('edit-photo-title').value = photo.title || '';
+  document.getElementById('edit-photo-rating').value = photo.rating || 5;
+  document.getElementById('edit-rating-value').textContent = `★ ${photo.rating || 5}`;
+  document.getElementById('edit-photo-album').value = photo.album || 'General';
+
+  document.getElementById('edit-photo-modal').classList.add('active');
 };
 
 async function loadPhotosAndTrash() {
@@ -1007,6 +1073,46 @@ function setupDashboardControls() {
       }
       eduForm.reset();
       loadExperienceAndEducation();
+    });
+  }
+
+  // Edit Photo Form Listener
+  const editPhotoForm = document.getElementById('edit-photo-form');
+  const editPhotoClose = document.getElementById('edit-photo-close');
+  const editPhotoModal = document.getElementById('edit-photo-modal');
+
+  if (editPhotoClose && editPhotoModal) {
+    editPhotoClose.addEventListener('click', () => editPhotoModal.classList.remove('active'));
+  }
+
+  if (editPhotoForm) {
+    editPhotoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-photo-id').value;
+      const title = document.getElementById('edit-photo-title').value.trim();
+      const rating = parseFloat(document.getElementById('edit-photo-rating').value);
+      const album = document.getElementById('edit-photo-album').value;
+
+      if (isFirebaseConfigured && db) {
+        try {
+          await updateDoc(doc(db, "gallery_photos", id), { title, rating, album });
+        } catch (err) { console.error("Error editing photo:", err); }
+      } else {
+        let photos = JSON.parse(localStorage.getItem('zim_published_photos') || '[]');
+        const photo = [...photos, ...defaultPhotos].find(p => p.id === id);
+        if (photo) {
+          photo.title = title;
+          photo.rating = rating;
+          photo.album = album;
+          const idx = photos.findIndex(p => p.id === id);
+          if (idx !== -1) photos[idx] = photo;
+          else photos.unshift(photo);
+          localStorage.setItem('zim_published_photos', JSON.stringify(photos));
+        }
+      }
+
+      if (editPhotoModal) editPhotoModal.classList.remove('active');
+      loadPhotosAndTrash();
     });
   }
 }
