@@ -1,8 +1,32 @@
 // Firebase Modular SDK Integration Configuration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+  getFirestore, 
+  collection, 
+  getDocs, 
+  getDoc, 
+  doc, 
+  addDoc, 
+  setDoc, 
+  updateDoc, 
+  deleteDoc, 
+  query, 
+  orderBy, 
+  where 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { 
+  getStorage, 
+  ref, 
+  uploadBytes, 
+  getDownloadURL, 
+  deleteObject 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 /**
  * Replace the credentials below with your actual Firebase Project config.
@@ -20,7 +44,10 @@ const firebaseConfig = {
 // Check if developer has replaced placeholder API key
 export const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY";
 
-let app, db, storage, auth;
+let app = null;
+let db = null;
+let storage = null;
+let auth = null;
 
 if (isFirebaseConfigured) {
   try {
@@ -33,7 +60,31 @@ if (isFirebaseConfigured) {
     console.warn("Firebase initialization error, fallback mode active:", err);
   }
 } else {
-  console.info("Notice: Firebase config contains placeholders. App will run in seamless local-storage mode for instant demonstration.");
+  console.info("Notice: Firebase config contains placeholders. App will run in local-storage/fallback mode until Firebase credentials are provided.");
 }
 
-export { app, db, storage, auth, collection, getDocs, addDoc, query, orderBy, ref, uploadBytes, getDownloadURL, signInWithEmailAndPassword, signOut, onAuthStateChanged };
+export { 
+  app, 
+  db, 
+  storage, 
+  auth, 
+  collection, 
+  getDocs, 
+  getDoc, 
+  doc, 
+  addDoc, 
+  setDoc, 
+  updateDoc, 
+  deleteDoc, 
+  query, 
+  orderBy, 
+  where, 
+  ref, 
+  uploadBytes, 
+  getDownloadURL, 
+  deleteObject, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+};
+

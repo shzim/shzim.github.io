@@ -1,9 +1,10 @@
 // CAD Modeling & Aeronautical Design Interactive Showcase JS
 import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+import { isFirebaseConfigured, db, collection, getDocs, query, orderBy } from './firebase-config.js';
 
 // Pre-seeded aeronautical CAD projects
-const cadProjects = [
+const defaultCadProjects = [
   {
     id: 'cad-1',
     title: 'Aeronautical Wing Rib & Spar Assembly',
@@ -13,7 +14,7 @@ const cadProjects = [
     materials: 'Aluminum 7075-T6',
     weight: '1.42 kg',
     previewImg: './img/img-13.webp',
-    stlUrl: '', // Optional 3D STL file path
+    stlUrl: '',
     description: 'High-strength structural wing rib designed for high-g loading and minimal structural mass. Optimized through Finite Element Analysis (FEA).'
   },
   {
@@ -42,6 +43,7 @@ const cadProjects = [
   }
 ];
 
+let allCadProjects = [];
 let activeFilter = 'All';
 let currentProject = null;
 
@@ -50,12 +52,59 @@ let scene, camera, renderer, controls, currentMesh;
 let isWireframe = false;
 let isAutoRotate = true;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   setupMobileMenu();
   setupFilters();
-  renderCadProjects();
+  await loadCadProjects();
   setup3DModal();
 });
+
+async function loadCadProjects() {
+  let loaded = [];
+  if (isFirebaseConfigured && db) {
+    try {
+      const snap = await getDocs(query(collection(db, "projects"), orderBy("displayOrder", "asc")));
+      snap.forEach(d => {
+        const item = d.data();
+        loaded.push({
+          id: d.id,
+          title: item.title,
+          category: item.category,
+          software: (item.cadSpecs && item.cadSpecs.software) || 'SolidWorks',
+          format: (item.cadSpecs && item.cadSpecs.format) || 'STEP / STL',
+          materials: (item.cadSpecs && item.cadSpecs.materials) || 'Aluminum / Titanium',
+          weight: (item.cadSpecs && item.cadSpecs.weight) || 'N/A',
+          previewImg: item.imageUrl || './img/img-13.webp',
+          description: item.shortDescription || item.fullDescription || ''
+        });
+      });
+    } catch (err) {
+      console.warn("Firestore cad query error:", err);
+    }
+  }
+
+  if (loaded.length === 0) {
+    const local = JSON.parse(localStorage.getItem('zim_projects') || '[]');
+    if (local.length > 0) {
+      loaded = local.map(item => ({
+        id: item.id,
+        title: item.title,
+        category: item.category,
+        software: (item.cadSpecs && item.cadSpecs.software) || 'SolidWorks',
+        format: (item.cadSpecs && item.cadSpecs.format) || 'STEP / STL',
+        materials: (item.cadSpecs && item.cadSpecs.materials) || 'Aluminum',
+        weight: (item.cadSpecs && item.cadSpecs.weight) || 'N/A',
+        previewImg: item.imageUrl || './img/img-13.webp',
+        description: item.shortDescription || item.fullDescription || ''
+      }));
+    } else {
+      loaded = defaultCadProjects;
+    }
+  }
+
+  allCadProjects = loaded;
+  renderCadProjects();
+}
 
 function setupMobileMenu() {
   const hamburger = document.getElementById('hamburger-menu');
@@ -86,8 +135,8 @@ function renderCadProjects() {
   grid.innerHTML = '';
 
   const filtered = activeFilter === 'All' 
-    ? cadProjects 
-    : cadProjects.filter(p => p.category.toLowerCase() === activeFilter.toLowerCase());
+    ? allCadProjects 
+    : allCadProjects.filter(p => (p.category || '').toLowerCase() === activeFilter.toLowerCase());
 
   if (filtered.length === 0) {
     grid.innerHTML = `

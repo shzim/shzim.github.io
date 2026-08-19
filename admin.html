@@ -20,15 +20,15 @@
 
       <form id="login-form">
         <div class="form-group">
-          <label for="admin-username">Username or Email</label>
-          <input type="text" id="admin-username" placeholder="e.g. zimbo" required autocomplete="username">
+          <label for="admin-email">Admin Email</label>
+          <input type="email" id="admin-email" placeholder="e.g. shzimbaka@gmail.com" required autocomplete="username">
         </div>
         <div class="form-group">
           <label for="admin-password">Password</label>
           <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password">
         </div>
         <div id="login-status-msg" class="status-msg error" style="margin-top: 1rem;"></div>
-        <button type="submit" class="cta-btn primary-btn full-width" style="margin-top: 1.5rem;">Sign In to Dashboard</button>
+        <button type="submit" id="login-submit-btn" class="cta-btn primary-btn full-width" style="margin-top: 1.5rem;">Sign In to Dashboard</button>
       </form>
     </div>
   </div>

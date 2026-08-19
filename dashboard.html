@@ -10,112 +10,441 @@
 </head>
 <body class="admin-body">
 
-  <div id="admin-dashboard-view" class="admin-container" style="max-width: 900px;">
-    <!-- Navigation Bar -->
-    <nav class="glass-panel admin-nav">
-      <div class="brand">Admin Dashboard</div>
-      <div style="display: flex; gap: 1rem; align-items: center;">
+  <div id="admin-dashboard-view" class="admin-container" style="max-width: 1050px;">
+    
+    <!-- Navigation Header -->
+    <nav class="glass-panel admin-nav" style="flex-wrap: wrap; gap: 1.5rem;">
+      <div class="brand" style="font-size: 2.2rem; font-weight: 700;">
+        <span>ZIM</span> Admin Dashboard
+      </div>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
         <button id="open-trash-modal-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.4rem; font-size: 1.3rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.5);">
           🗑️ Recycle Bin (<span id="trash-badge-count">0</span>)
         </button>
-        <a href="gallery.html" class="cta-btn outline-btn" style="padding: 0.8rem 1.6rem; font-size: 1.4rem;">View Gallery</a>
+        <a href="index.html" class="cta-btn outline-btn" style="padding: 0.8rem 1.6rem; font-size: 1.4rem;">View Site</a>
         <button id="logout-btn" class="cta-btn outline-btn" style="padding: 0.8rem 1.6rem; font-size: 1.4rem;">Log Out</button>
       </div>
     </nav>
 
+    <!-- Admin Section Tabs -->
+    <div class="gallery-filters" id="dashboard-tabs" style="margin-bottom: 2.5rem; justify-content: flex-start; gap: 1rem; flex-wrap: wrap;">
+      <button class="filter-btn active" data-tab="gallery">📷 Photography Gallery</button>
+      <button class="filter-btn" data-tab="projects">🚀 Projects Manager</button>
+      <button class="filter-btn" data-tab="profile">👤 Profile & Contact</button>
+      <button class="filter-btn" data-tab="experience">💼 Experience & Education</button>
+    </div>
+
     <main style="display: flex; flex-direction: column; gap: 3rem;">
 
-      <!-- SECTION 1: PUBLISH NEW PHOTO -->
-      <section class="glass-panel upload-card">
-        <div class="card-header">
-          <h2>Publish New Photo</h2>
-          <p>Upload photography directly to your live gallery</p>
-        </div>
+      <!-- ================= TAB 1: PHOTOGRAPHY GALLERY ================= -->
+      <div id="tab-gallery" class="dashboard-tab-content active">
+        <!-- SECTION 1: PUBLISH NEW PHOTO -->
+        <section class="glass-panel upload-card" style="margin-bottom: 3rem;">
+          <div class="card-header">
+            <h2>Publish New Photo</h2>
+            <p>Upload photography directly to Firebase Storage & Gallery</p>
+          </div>
 
-        <form id="upload-form">
-          <!-- Drag & Drop Zone -->
-          <div class="drag-drop-zone" id="drop-zone">
-            <input type="file" id="photo-input" accept="image/*" class="file-input">
-            <div class="drop-zone-content" id="drop-zone-content">
-              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-              </svg>
-              <p>Drag & drop photo here, or <span>browse file</span></p>
-              <small>Supports PNG, JPG, WEBP</small>
+          <form id="upload-form">
+            <!-- Drag & Drop Zone -->
+            <div class="drag-drop-zone" id="drop-zone">
+              <input type="file" id="photo-input" accept="image/*" class="file-input">
+              <div class="drop-zone-content" id="drop-zone-content">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <p>Drag & drop photo here, or <span>browse file</span></p>
+                <small>Supports PNG, JPG, WEBP</small>
+              </div>
+
+              <div id="image-preview-container" class="preview-container hidden">
+                <img id="image-preview" src="" alt="Preview">
+                <button type="button" id="remove-img-btn" class="remove-btn" title="Remove image">&times;</button>
+              </div>
             </div>
 
-            <div id="image-preview-container" class="preview-container hidden">
-              <img id="image-preview" src="" alt="Preview">
-              <button type="button" id="remove-img-btn" class="remove-btn" title="Remove image">&times;</button>
-            </div>
-          </div>
-
-          <!-- Photo Title -->
-          <div class="form-group">
-            <label for="photo-title">Photo Title</label>
-            <input type="text" id="photo-title" placeholder="e.g. Sunset over Male Atoll" required>
-          </div>
-
-          <div class="form-row">
-            <!-- Rating Slider -->
-            <div class="form-group flex-1">
-              <label for="photo-rating">
-                <span>Rating</span>
-                <span id="rating-value" class="rating-badge">★ 5.0</span>
-              </label>
-              <input type="range" id="photo-rating" min="1" max="5" step="0.5" value="5">
-              <div class="star-display" id="star-display">★★★★★</div>
+            <!-- Photo Title -->
+            <div class="form-group">
+              <label for="photo-title">Photo Title</label>
+              <input type="text" id="photo-title" placeholder="e.g. Sunset over Male Atoll" required>
             </div>
 
-            <!-- Album Selector -->
-            <div class="form-group flex-1">
-              <label for="photo-album">Album / Folder</label>
-              <select id="photo-album" required>
-                <option value="CAD Modeling">CAD Modeling & Design</option>
-                <option value="International Tours">International Tours</option>
-                <option value="General">General</option>
-                <option value="Aviation">Aviation</option>
-                <option value="Creative">Creative</option>
-              </select>
+            <div class="form-row">
+              <!-- Rating Slider -->
+              <div class="form-group flex-1">
+                <label for="photo-rating">
+                  <span>Rating</span>
+                  <span id="rating-value" class="rating-badge">★ 5.0</span>
+                </label>
+                <input type="range" id="photo-rating" min="1" max="5" step="0.5" value="5">
+                <div class="star-display" id="star-display">★★★★★</div>
+              </div>
+
+              <!-- Album Selector -->
+              <div class="form-group flex-1">
+                <label for="photo-album">Album / Folder</label>
+                <select id="photo-album" required>
+                  <option value="International Tours">International Tours</option>
+                  <option value="General">General</option>
+                  <option value="Aviation">Aviation</option>
+                  <option value="Creative">Creative</option>
+                </select>
+              </div>
             </div>
+
+            <!-- Progress Bar & Status -->
+            <div id="upload-progress-bar" class="progress-bar hidden">
+              <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div id="status-message" class="status-msg"></div>
+
+            <button type="submit" id="publish-btn" class="cta-btn primary-btn full-width">Publish Photo</button>
+          </form>
+        </section>
+
+        <!-- SECTION 2: ALBUM & FOLDER MANAGEMENT -->
+        <section class="glass-panel" style="padding: 3rem; margin-bottom: 3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2 style="font-size: 2.2rem; font-weight: 700;">Folder / Album Manager</h2>
+              <p style="color: var(--text-muted); font-size: 1.4rem;">Create new album folders or rename existing ones</p>
+            </div>
+            <button id="create-album-btn" class="cta-btn primary-btn" style="padding: 0.8rem 1.8rem; font-size: 1.4rem;">+ Create New Album</button>
           </div>
 
-          <!-- Progress Bar & Status -->
-          <div id="upload-progress-bar" class="progress-bar hidden">
-            <div id="progress-fill" class="progress-fill"></div>
+          <div id="album-list-container" style="display: flex; flex-wrap: wrap; gap: 1.2rem;">
+            <!-- Populated by dashboard.js -->
           </div>
-          <div id="status-message" class="status-msg"></div>
+        </section>
 
-          <button type="submit" id="publish-btn" class="cta-btn primary-btn full-width">Publish Photo</button>
-        </form>
-      </section>
-
-      <!-- SECTION 2: ALBUM & FOLDER MANAGEMENT -->
-      <section class="glass-panel" style="padding: 3rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <h2 style="font-size: 2.2rem; font-weight: 700;">Folder / Album Manager</h2>
-            <p style="color: var(--text-muted); font-size: 1.4rem;">Create new album folders or rename existing ones</p>
+        <!-- SECTION 3: PUBLISHED PHOTOS MANAGEMENT -->
+        <section class="glass-panel" style="padding: 3rem;">
+          <div style="margin-bottom: 2rem;">
+            <h2 style="font-size: 2.2rem; font-weight: 700;">Manage Published Photos</h2>
+            <p style="color: var(--text-muted); font-size: 1.4rem;">Edit photo titles, ratings, album tags, or move items to Trash</p>
           </div>
-          <button id="create-album-btn" class="cta-btn primary-btn" style="padding: 0.8rem 1.8rem; font-size: 1.4rem;">+ Create New Album</button>
-        </div>
 
-        <div id="album-list-container" style="display: flex; flex-wrap: wrap; gap: 1.2rem;">
-          <!-- Populated by dashboard.js -->
-        </div>
-      </section>
+          <div id="manage-photos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
+            <!-- Populated by dashboard.js -->
+          </div>
+        </section>
+      </div>
 
-      <!-- SECTION 3: PUBLISHED PHOTOS MANAGEMENT -->
-      <section class="glass-panel" style="padding: 3rem;">
-        <div style="margin-bottom: 2rem;">
-          <h2 style="font-size: 2.2rem; font-weight: 700;">Manage Published Photos</h2>
-          <p style="color: var(--text-muted); font-size: 1.4rem;">Edit photo titles, ratings, album tags, or move items to Trash</p>
-        </div>
 
-        <div id="manage-photos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
-          <!-- Populated by dashboard.js -->
-        </div>
-      </section>
+      <!-- ================= TAB 2: PROJECTS MANAGER ================= -->
+      <div id="tab-projects" class="dashboard-tab-content hidden">
+        <section class="glass-panel" style="padding: 3rem; margin-bottom: 3rem;">
+          <div style="margin-bottom: 2rem;">
+            <h2 style="font-size: 2.2rem; font-weight: 700;">Add / Edit Portfolio Project</h2>
+            <p style="color: var(--text-muted); font-size: 1.4rem;">Publish engineering models, 3D CAD designs, software, or delegation projects</p>
+          </div>
+
+          <form id="project-form">
+            <input type="hidden" id="project-id">
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="project-title">Project Title</label>
+                <input type="text" id="project-title" placeholder="e.g. Aeronautical Wing Rib & Spar Assembly" required>
+              </div>
+
+              <div class="form-group flex-1">
+                <label for="project-category">Category</label>
+                <select id="project-category" required>
+                  <option value="Aeronautical">Aeronautical</option>
+                  <option value="Propulsion">Propulsion</option>
+                  <option value="Drone & UAV">Drone & UAV</option>
+                  <option value="Software & Web">Software & Web</option>
+                  <option value="General">General</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="project-short-desc">Short Description (for card preview)</label>
+              <input type="text" id="project-short-desc" placeholder="High-strength structural wing rib designed for high-g loading..." required>
+            </div>
+
+            <div class="form-group">
+              <label for="project-full-desc">Full Description & Details</label>
+              <textarea id="project-full-desc" rows="4" placeholder="Detailed technical description..." style="width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #fff; font-family: inherit; font-size: 1.4rem; resize: vertical;"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="project-tech">Technologies (comma separated)</label>
+                <input type="text" id="project-tech" placeholder="SolidWorks 2024, ANSYS, FEA, Aluminum 7075">
+              </div>
+
+              <div class="form-group flex-1">
+                <label for="project-order">Display Order</label>
+                <input type="number" id="project-order" value="1" min="1">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="project-github">GitHub Repository Link</label>
+                <input type="url" id="project-github" placeholder="https://github.com/shzim/...">
+              </div>
+
+              <div class="form-group flex-1">
+                <label for="project-live">Live Demo / Viewport Link</label>
+                <input type="url" id="project-live" placeholder="https://...">
+              </div>
+            </div>
+
+            <!-- CAD Specs Accordion (Optional) -->
+            <fieldset style="border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
+              <legend style="color: var(--secondary-accent); padding: 0 0.8rem; font-weight: 600;">Optional 3D CAD Specifications</legend>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="cad-software">Software</label>
+                  <input type="text" id="cad-software" placeholder="e.g. SolidWorks 2024">
+                </div>
+                <div class="form-group flex-1">
+                  <label for="cad-format">Formats</label>
+                  <input type="text" id="cad-format" placeholder="e.g. STEP / STL">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="cad-materials">Materials</label>
+                  <input type="text" id="cad-materials" placeholder="e.g. Aluminum 7075-T6">
+                </div>
+                <div class="form-group flex-1">
+                  <label for="cad-weight">Est. Weight</label>
+                  <input type="text" id="cad-weight" placeholder="e.g. 1.42 kg">
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="form-row" style="align-items: center;">
+              <div class="form-group flex-1">
+                <label for="project-image-input">Project Cover Image</label>
+                <input type="file" id="project-image-input" accept="image/*">
+              </div>
+
+              <div class="form-group" style="display: flex; align-items: center; gap: 0.8rem; margin-top: 1rem;">
+                <input type="checkbox" id="project-featured" checked style="width: 2rem; height: 2rem; accent-color: var(--primary-accent); cursor: pointer;">
+                <label for="project-featured" style="cursor: pointer; margin: 0; font-weight: 600;">Feature on Home Page</label>
+              </div>
+            </div>
+
+            <div id="project-status-msg" class="status-msg"></div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+              <button type="submit" id="save-project-btn" class="cta-btn primary-btn flex-1">Save Project</button>
+              <button type="button" id="reset-project-form-btn" class="cta-btn outline-btn">Clear / Reset</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Existing Projects List -->
+        <section class="glass-panel" style="padding: 3rem;">
+          <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem;">Existing Projects</h2>
+          <div id="projects-list-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+            <!-- Populated by dashboard.js -->
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ================= TAB 3: PROFILE & CONTACT ================= -->
+      <div id="tab-profile" class="dashboard-tab-content hidden">
+        <section class="glass-panel" style="padding: 3rem;">
+          <div style="margin-bottom: 2rem;">
+            <h2 style="font-size: 2.2rem; font-weight: 700;">Edit Profile, Bio & Contact Information</h2>
+            <p style="color: var(--text-muted); font-size: 1.4rem;">Update home page headings, biography text, quote, resume URL, and public contact information</p>
+          </div>
+
+          <form id="profile-form">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="profile-name">Full Name</label>
+                <input type="text" id="profile-name" value="Shariar Hossain Zim" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="profile-tagline">Header Tagline / Badge</label>
+                <input type="text" id="profile-tagline" value="Aeronautical Engineer & Entrepreneur" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="hero-title-1">Hero Title Line 1</label>
+                <input type="text" id="hero-title-1" value="Visionary Creator">
+              </div>
+              <div class="form-group flex-1">
+                <label for="hero-title-2">Hero Title Line 2</label>
+                <input type="text" id="hero-title-2" value="Aviation Enthusiast">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="hero-description">Hero Section Subtitle / Intro</label>
+              <textarea id="hero-description" rows="2" style="width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #fff; font-family: inherit; font-size: 1.4rem; resize: vertical;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="about-text">About Me Paragraph</label>
+              <textarea id="about-text" rows="4" style="width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #fff; font-family: inherit; font-size: 1.4rem; resize: vertical;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="quote-text">Personal Quote Section Text</label>
+              <textarea id="quote-text" rows="3" style="width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #fff; font-family: inherit; font-size: 1.4rem; resize: vertical;"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="profile-phone">Phone Number</label>
+                <input type="text" id="profile-phone" value="+36204844256">
+              </div>
+              <div class="form-group flex-1">
+                <label for="profile-email">Public Email</label>
+                <input type="email" id="profile-email" value="shzimbaka@gmail.com">
+              </div>
+              <div class="form-group flex-1">
+                <label for="profile-location">Location</label>
+                <input type="text" id="profile-location" value="Hungary">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="profile-resume">Resume PDF URL (or file upload)</label>
+                <input type="text" id="profile-resume" value="Resume.pdf">
+              </div>
+              <div class="form-group flex-1">
+                <label for="profile-image-input">Upload New Profile Image</label>
+                <input type="file" id="profile-image-input" accept="image/*">
+              </div>
+            </div>
+
+            <fieldset style="border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
+              <legend style="color: var(--secondary-accent); padding: 0 0.8rem; font-weight: 600;">Social Media Links</legend>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="social-linkedin">LinkedIn</label>
+                  <input type="url" id="social-linkedin" value="https://www.linkedin.com/in/shzim/">
+                </div>
+                <div class="form-group flex-1">
+                  <label for="social-facebook">Facebook</label>
+                  <input type="url" id="social-facebook" value="https://www.facebook.com/shzimbaka/">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="social-twitter">X (Twitter)</label>
+                  <input type="url" id="social-twitter" value="https://twitter.com/loneeeeewoolfff">
+                </div>
+                <div class="form-group flex-1">
+                  <label for="social-instagram">Instagram</label>
+                  <input type="url" id="social-instagram" value="https://www.instagram.com/loneeeeewooooolfffff">
+                </div>
+              </div>
+            </fieldset>
+
+            <div id="profile-status-msg" class="status-msg"></div>
+            <button type="submit" class="cta-btn primary-btn full-width" style="margin-top: 1rem;">Save Profile Settings</button>
+          </form>
+        </section>
+      </div>
+
+
+      <!-- ================= TAB 4: EXPERIENCE & EDUCATION ================= -->
+      <div id="tab-experience" class="dashboard-tab-content hidden">
+        <!-- Experience Section -->
+        <section class="glass-panel" style="padding: 3rem; margin-bottom: 3rem;">
+          <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem;">Manage Work Experience</h2>
+          
+          <form id="experience-form" style="margin-bottom: 2.5rem;">
+            <input type="hidden" id="exp-id">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="exp-role">Role / Position Title</label>
+                <input type="text" id="exp-role" placeholder="e.g. Lead Aeronautical Researcher" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="exp-company">Company / Organization</label>
+                <input type="text" id="exp-company" placeholder="e.g. Aero Design Lab" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="exp-start">Start Date</label>
+                <input type="text" id="exp-start" placeholder="e.g. 2024" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="exp-end">End Date</label>
+                <input type="text" id="exp-end" placeholder="e.g. Present" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="exp-order">Display Order</label>
+                <input type="number" id="exp-order" value="1" min="1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="exp-desc">Description</label>
+              <textarea id="exp-desc" rows="2" style="width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #fff; font-family: inherit; font-size: 1.4rem; resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="cta-btn primary-btn" style="padding: 0.8rem 1.8rem; font-size: 1.4rem;">Save Experience Entry</button>
+          </form>
+
+          <div id="experience-list-container" style="display: flex; flex-direction: column; gap: 1.2rem;">
+            <!-- Populated by dashboard.js -->
+          </div>
+        </section>
+
+        <!-- Education Section -->
+        <section class="glass-panel" style="padding: 3rem;">
+          <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem;">Manage Education & Qualifications</h2>
+          
+          <form id="education-form" style="margin-bottom: 2.5rem;">
+            <input type="hidden" id="edu-id">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="edu-degree">Degree / Diploma</label>
+                <input type="text" id="edu-degree" placeholder="e.g. B.Sc. in Aeronautical Engineering" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="edu-institution">Institution / University</label>
+                <input type="text" id="edu-institution" placeholder="e.g. University Studies" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="edu-start">Start Date</label>
+                <input type="text" id="edu-start" placeholder="e.g. 2022" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="edu-end">End Date</label>
+                <input type="text" id="edu-end" placeholder="e.g. Present" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="edu-order">Display Order</label>
+                <input type="number" id="edu-order" value="1" min="1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edu-details">Details / Specialization</label>
+              <textarea id="edu-details" rows="2" style="width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #fff; font-family: inherit; font-size: 1.4rem; resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="cta-btn primary-btn" style="padding: 0.8rem 1.8rem; font-size: 1.4rem;">Save Education Entry</button>
+          </form>
+
+          <div id="education-list-container" style="display: flex; flex-direction: column; gap: 1.2rem;">
+            <!-- Populated by dashboard.js -->
+          </div>
+        </section>
+      </div>
 
     </main>
   </div>

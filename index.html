@@ -44,13 +44,13 @@
       <div class="hero-content reveal">
         <div class="hero-badge">
           <span class="dot"></span>
-          <span>Aeronautical Engineer & Entrepreneur</span>
+          <span id="hero-badge-span">Aeronautical Engineer & Entrepreneur</span>
         </div>
-        <h1 class="hero-title">
+        <h1 class="hero-title" id="hero-title-el">
           <span>Visionary Creator</span>
           <span class="accent-text">& Aviation Enthusiast</span>
         </h1>
-        <p class="hero-description">
+        <p class="hero-description" id="hero-desc-el">
           Welcome to my official portfolio. Driven by a passion for innovation, aeronautics, and visual storytelling. Discover my projects, international delegation work, and photography gallery.
         </p>
       </div>
@@ -61,7 +61,7 @@
   <section id="caution">
     <div class="container">
       <div class="glass-panel quote-card reveal">
-        <p class="quote-text">
+        <p class="quote-text" id="quote-text-el">
           "In the ethereal realm, where dreams alight, resides a luminary, a radiant light. This portfolio is a glimpse of pure art, a testament to the depths of a creative heart. My heart was no longer mine the moment her grace crossed my path; it belongs entirely to the most breathtaking woman I have ever known."
         </p>
       </div>
@@ -74,8 +74,8 @@
       <h2 class="section-title reveal">Featured <span>Projects</span></h2>
       <p class="section-subtitle reveal">Aeronautical Engineering 3D CAD Modeling, Structural Rib Assemblies & Propulsion Designs</p>
       
-      <div class="projects-grid">
-        <!-- Projects will be added here later -->
+      <div class="projects-grid" id="projects-grid-el">
+        <!-- Dynamically populated via app.js -->
       </div>
     </div>
   </section>
@@ -87,15 +87,15 @@
       
       <div class="about-grid reveal">
         <div class="about-img-frame">
-          <img src="./img/img-2.webp" alt="Shariar Hossain Zim" loading="lazy" decoding="async" width="900" height="1349">
+          <img id="about-img-el" src="./img/img-2.webp" alt="Shariar Hossain Zim" loading="lazy" decoding="async" width="900" height="1349">
         </div>
         <div class="about-info glass-panel" style="padding: 3.5rem;">
           <h2>
-            <a href="Resume.pdf" target="_blank" style="color: var(--secondary-accent); text-decoration: none; cursor: pointer; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary-accent)'" onmouseout="this.style.color='var(--secondary-accent)'" title="Click to view Resume in new tab">
+            <a id="resume-link-el" href="Resume.pdf" target="_blank" style="color: var(--secondary-accent); text-decoration: none; cursor: pointer; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary-accent)'" onmouseout="this.style.color='var(--secondary-accent)'" title="Click to view Resume in new tab">
               Entrepreneur & Aeronautical Student ↗
             </a>
           </h2>
-          <p>
+          <p id="about-text-el">
             An entrepreneurial engineer and aviation enthusiast dedicated to merging technical rigor with creative execution. With a background spanning leadership, media production, and international delegations, the focus remains on driving meaningful innovation and pushing creative boundaries.
           </p>
         </div>
@@ -116,7 +116,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           </div>
           <h3>Phone</h3>
-          <p><a href="tel:+36204844256">+36204844256</a></p>
+          <p><a id="contact-phone-el" href="tel:+36204844256">+36204844256</a></p>
         </div>
 
         <!-- Email -->
@@ -125,7 +125,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
           <h3>Email</h3>
-          <p><a href="mailto:shzimbaka@gmail.com">shzimbaka@gmail.com</a></p>
+          <p><a id="contact-email-el" href="mailto:shzimbaka@gmail.com">shzimbaka@gmail.com</a></p>
         </div>
 
         <!-- Address -->
@@ -134,7 +134,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <h3>Location</h3>
-          <p>Hungary</p>
+          <p id="contact-location-el">Hungary</p>
         </div>
       </div>
     </div>
@@ -148,16 +148,16 @@
       </div>
 
       <div class="social-links">
-        <a href="https://www.linkedin.com/in/shzim/" target="_blank" class="social-icon-btn" title="LinkedIn" aria-label="LinkedIn">
+        <a id="social-linkedin-el" href="https://www.linkedin.com/in/shzim/" target="_blank" class="social-icon-btn" title="LinkedIn" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
-        <a href="https://www.facebook.com/shzimbaka/" target="_blank" class="social-icon-btn" title="Facebook" aria-label="Facebook">
+        <a id="social-facebook-el" href="https://www.facebook.com/shzimbaka/" target="_blank" class="social-icon-btn" title="Facebook" aria-label="Facebook">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
         </a>
-        <a href="https://twitter.com/loneeeeewoolfff" target="_blank" class="social-icon-btn" title="X (Twitter)" aria-label="X (Twitter)">
+        <a id="social-twitter-el" href="https://twitter.com/loneeeeewoolfff" target="_blank" class="social-icon-btn" title="X (Twitter)" aria-label="X (Twitter)">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <a href="https://www.instagram.com/loneeeeewooooolfffff" target="_blank" class="social-icon-btn" title="Instagram" aria-label="Instagram">
+        <a id="social-instagram-el" href="https://www.instagram.com/loneeeeewooooolfffff" target="_blank" class="social-icon-btn" title="Instagram" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         </a>
       </div>
@@ -167,6 +167,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
